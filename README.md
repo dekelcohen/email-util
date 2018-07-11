@@ -30,7 +30,7 @@ returns - { arrNameTok - arr of probable person nanes tokens from display name a
 
 mailInfo - email address and display Name { email: 'davidl from Acme@acme.com', displayName: 'David Landen' } 
 
-# License and Attribution
+## License and Attribution
 
 This package has a 5000 most common english words / lemmas created by https://www.wordfrequency.info
 the Author Mark Davis permits usage of his list in Open Source Projects, as long as a clear attribution to the above website is presented.   
