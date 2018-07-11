@@ -1,0 +1,25 @@
+{
+  "name": "email-util",
+  "version": "0.0.6",
+  "description": "Email text and metadata analysis utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://harmonie-collage@vs-ssh.visualstudio.com:22/Collage/_ssh/email-util"
+  },
+  "keywords": [
+    "email",
+    "util",
+    "helpers",
+    "nlp",
+    "text-mining",
+    "text",
+    "text-analysis",
+    "person"
+  ],
+  "author": "Dekel Cohen",
+  "license": "MIT"
+}
