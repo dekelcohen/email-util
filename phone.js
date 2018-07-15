@@ -1,5 +1,5 @@
 const chrono = require('chrono-node');
-
+require('datejs');
 
 const SPACE_CHARS = ' \u00A0\u200B\u3000';
 const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
@@ -68,13 +68,17 @@ function validPhoneNumber(candidate) {
 function extractPhoneNumbers(text) {    
     //First, filter out DateTime that may confuse the phone extractor
     let filtText = text;
-    const dateMatchs = chrono.parse(text);
+    const dateMatchs = chrono.strict.parse(text);
     let comp = 0;
     for (const dm of dateMatchs) {
+    	const valid = Date.parse(dm.text);
+    	//console.log(`valid=${valid}, dm.text=${dm.text}, dm=${JSON.stringify(dm)}`);
+    	if (!valid) { continue; }
+
     	const idxEndDate = comp + dm.index + dm.text.length;
     	filtText = filtText.substr(0,dm.index + comp) + filtText.substring(idxEndDate,filtText.length);
     	comp -= dm.text.length;
-    	//console.log(filtText);
+    	//console.log(`filtText=${filtText}`);
     }
     const curRe = new RegExp(
         MAYBE_PHONE_NUMBER_RE,
@@ -99,7 +103,7 @@ function extractPhoneNumbers(text) {
 }
 
 function main() {
-  extractPhoneNumbers( 'Office: +1 (310) 774-0014');
+  extractPhoneNumbers( '17-9-2016');
 }
 
 main();
