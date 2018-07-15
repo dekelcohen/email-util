@@ -1,3 +1,6 @@
+const chrono = require('chrono-node');
+
+
 const SPACE_CHARS = ' \u00A0\u200B\u3000';
 const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
 const VALID_PUNCTUATION = '-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F\u00AD\u2060' + SPACE_CHARS +
@@ -63,13 +66,23 @@ function validPhoneNumber(candidate) {
 }
 
 function extractPhoneNumbers(text) {    
+    //First, filter out DateTime that may confuse the phone extractor
+    let filtText = text;
+    const dateMatchs = chrono.parse(text);
+    let comp = 0;
+    for (const dm of dateMatchs) {
+    	const idxEndDate = comp + dm.index + dm.text.length;
+    	filtText = filtText.substr(0,dm.index + comp) + filtText.substring(idxEndDate,filtText.length);
+    	comp -= dm.text.length;
+    	//console.log(filtText);
+    }
     const curRe = new RegExp(
         MAYBE_PHONE_NUMBER_RE,
         'g',
     );
     let m;
     const phoneNumbers = [];
-    while ((m = curRe.exec(text)) !== null) {
+    while ((m = curRe.exec(filtText)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
         if (m.index === curRe.lastIndex) {
             curRe.lastIndex++;
@@ -85,7 +98,11 @@ function extractPhoneNumbers(text) {
     return phoneNumbers;
 }
 
+function main() {
+  extractPhoneNumbers( 'Office: +1 (310) 774-0014');
+}
 
+main();
 module.exports = {
    extractPhoneNumbers,    
 }
