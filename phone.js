@@ -65,20 +65,43 @@ function validPhoneNumber(candidate) {
 	return valid;
 }
 
+// Problem: Phone numbers may look like datetime - (ex: '12-07-2005', '2017 10' from 'Sep 24, 2017 10:30')
+// Solution: Use date extractors to disqualfy datetime substrings.
+// Problem: The date extractors sometimes detect a part of a phone num is a date: ex: *8-6-90-54504 (a substring is incorrectly detected as a date)
+// Solution: Validate chrono dates with datejs + If extracted phone number candidate overlaps an extracted datetime, it is disqualified, unless it contains the entire datetime (longer match wins) 
+function validateNotDateTime(mtcText,idxStartMtc,dateMatchs) {
+	let valid = true;
+	const idxEndMtc = idxStartMtc + mtcText.length;
+	for (const dm of dateMatchs) {
+		const idxStartDate = dm.index; 
+    	const idxEndDate = idxStartDate + dm.text.length;
+    	//Doesn't overlap a date
+    	if (idxStartMtc > idxEndDate || idxEndMtc < idxStartDate) {
+    		continue;
+    	}
+    	//Overlaps, but contains the date (phone longer match than date) --> still phone
+    	if (idxStartMtc <= idxStartDate && idxEndMtc >= idxEndDate && mtcText.length >  dm.text.length) {
+    		continue;
+    	}
+    	//Overlaps (but doesn't contain) --> decide date (not a phone nmumber)
+    	valid = false;
+    	break;
+    }
+    return valid;
+}
+
 function extractPhoneNumbers(text) {    
     //First, filter out DateTime that may confuse the phone extractor
     let filtText = text;
-    const dateMatchs = chrono.strict.parse(text);
+    const rawDateMatchs = chrono.strict.parse(text);
     let comp = 0;
-    for (const dm of dateMatchs) {
+    const dateMatchs = [];
+    for (const dm of rawDateMatchs) {
     	const valid = Date.parse(dm.text);
-    	//console.log(`valid=${valid}, dm.text=${dm.text}, dm=${JSON.stringify(dm)}`);
-    	if (!valid) { continue; }
-
-    	const idxEndDate = comp + dm.index + dm.text.length;
-    	filtText = filtText.substr(0,dm.index + comp) + filtText.substring(idxEndDate,filtText.length);
-    	comp -= dm.text.length;
-    	//console.log(`filtText=${filtText}`);
+//    	console.log(`valid=${valid}, dm.text=${dm.text}, dm=${JSON.stringify(dm)}`);
+    	if (valid) { 
+    		dateMatchs.push(dm);
+    	}
     }
     const curRe = new RegExp(
         MAYBE_PHONE_NUMBER_RE,
@@ -91,22 +114,23 @@ function extractPhoneNumbers(text) {
         if (m.index === curRe.lastIndex) {
             curRe.lastIndex++;
         }
-
-        m.forEach((match, index, groupIndex) => {
-            if (match && validPhoneNumber(match)) {
-            	//console.log(match);
-            	phoneNumbers.push(match);
-            }
-        });
+        const match = m[0];
+        if (match && validPhoneNumber(match) && validateNotDateTime(match,m.index,dateMatchs)) {
+        	//console.log(match);
+        	phoneNumbers.push(match);
+        }
+        
     } // End while scan text with re
     return phoneNumbers;
 }
 
 function main() {
-  extractPhoneNumbers( '17-9-2016');
+  const phnums = extractPhoneNumbers( 'https://www.forbes.com/sites/amitchowdhry/2018/04/09/microsoft-monday-office-365-advanced-protection-5-billion-for-iot-research-ai-training-courses/#30beb8a4202e');
+  console.log(`extractPhoneNumbers: ${JSON.stringify(phnums)}`);
+  
 }
 
-main();
+//main();
 module.exports = {
    extractPhoneNumbers,    
 }
