@@ -14,7 +14,7 @@ const SEPARATOR_PAT = `[${VALID_PUNCTUATION}]{1,4}`;
 const SEPARATOR_RE = new RegExp(`(${SEPARATOR_PAT})`,'gi');
 
 
-const MAYBE_PHONE_NUMBER_RE = new RegExp(`${DIGITS_PAT}((${SEPARATOR_PAT})*${DIGITS_PAT})*`,'gi');
+const MAYBE_PHONE_NUMBER_RE = new RegExp(`${DIGITS_PAT}((${SEPARATOR_PAT})${DIGITS_PAT}){0,6}`,'gi');
 
 const MAX_TOTAL_DIGITS = 15;
 const MAX_GROUP_DIGITS = 15;
@@ -91,25 +91,20 @@ function validateNotDateTime(mtcText,idxStartMtc,dateMatchs) {
 }
 
 function extractPhoneNumbers(text) {    
-    //First, filter out DateTime that may confuse the phone extractor
-    let filtText = text;
+    // Collect dates from text that may confuse phone extractor. See validateNotDateTime
     const rawDateMatchs = chrono.strict.parse(text);
     let comp = 0;
     const dateMatchs = [];
     for (const dm of rawDateMatchs) {
     	const valid = Date.parse(dm.text);
-//    	console.log(`valid=${valid}, dm.text=${dm.text}, dm=${JSON.stringify(dm)}`);
     	if (valid) { 
     		dateMatchs.push(dm);
     	}
     }
-    const curRe = new RegExp(
-        MAYBE_PHONE_NUMBER_RE,
-        'g',
-    );
+    const curRe = MAYBE_PHONE_NUMBER_RE;
     let m;
     const phoneNumbers = [];
-    while ((m = curRe.exec(filtText)) !== null) {
+    while ((m = curRe.exec(text)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
         if (m.index === curRe.lastIndex) {
             curRe.lastIndex++;
