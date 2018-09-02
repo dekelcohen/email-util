@@ -51,7 +51,7 @@ function findTopicInText(topicText,text) {
     const m = new RegExp(`${escapedTopicText}`).exec(text);     
     let res = null;
     if (m != null) {
-    	res = { idxStart : m.index, matchStr : m[0] };
+       res = { idxStart : m.index, matchStr : m[0], text };
     }
     return res;
 }
