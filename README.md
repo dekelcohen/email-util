@@ -33,4 +33,4 @@ mailInfo - email address and display Name { email: 'davidl from Acme@acme.com', 
 ## License and Attribution
 
 This package has a 5000 most common english words / lemmas created by https://www.wordfrequency.info
-the Author Mark Davis permits usage of his list in Open Source Projects, as long as a clear attribution to the above website is presented.   
+The Author Mark Davis permits usage of his list in Open Source Projects, as long as a clear attribution to the above website is presented.  
