@@ -2,6 +2,20 @@ const fs = require('fs-extra');
 const _ = require('lodash');
 const shallowequal = require('shallowequal');
 
+const SPACE_CHARS = ' \u00A0\u200B\u3000';
+const BASE_LANG_CHARS = 'a-zA-Z';
+const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
+const VALID_PUNCTUATION = '-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F\u00AD\u2060' + SPACE_CHARS +
+                '()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E';
+
+const DIGITS_PAT = `[${VALID_DIGITS}]+`;
+const DIGITS_RE = new RegExp(`${DIGITS_PAT}`,'gi')
+const BASE_LANG_PAT = `[${BASE_LANG_CHARS}]+`;
+const BASE_LANG_RE = new RegExp(`${BASE_LANG_PAT}`,'g')
+const PUNCTUATION_PAT = `[${VALID_PUNCTUATION}]+`;
+const PUNCTUATION_RE = new RegExp(`${PUNCTUATION_PAT}`,'g')
+
+
 function getNormalizedSubject(subject) {
 	return subject.replace(/^fw:|^re:|^fwd:|^aw:/gi, '').replace(/^Accepted:|^Cancelled:|^Declined:/g, '').trim();
 }
@@ -80,4 +94,14 @@ module.exports = {
    findTopicInText,
    isArrayEq,
    objToArr,
+   SPACE_CHARS,
+   VALID_DIGITS,
+   VALID_PUNCTUATION,   
+   PUNCTUATION_PAT,
+   BASE_LANG_CHARS,
+   BASE_LANG_PAT,
+   DIGITS_PAT,
+   DIGITS_RE,
+   BASE_LANG_RE,
+   PUNCTUATION_RE,
 }

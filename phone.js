@@ -1,14 +1,9 @@
 const chrono = require('chrono-node');
 require('datejs');
 
-const SPACE_CHARS = ' \u00A0\u200B\u3000';
-const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
-const VALID_PUNCTUATION = '-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F\u00AD\u2060' + SPACE_CHARS +
-  						  '()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E';
+const { SPACE_CHARS, VALID_PUNCTUATION, DIGITS_PAT, DIGITS_RE }  = require('./nlp-helpers');
 
 
-const DIGITS_PAT = `[${VALID_DIGITS}]+`;
-const DIGITS_RE = new RegExp(`${DIGITS_PAT}`,'gi')
 
 const SEPARATOR_PAT = `[${VALID_PUNCTUATION}]{1,4}`;
 const SEPARATOR_RE = new RegExp(`(${SEPARATOR_PAT})`,'gi');
