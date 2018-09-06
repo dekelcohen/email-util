@@ -47,8 +47,11 @@ function findTopicInText(topicText,text) {
     if (escapedTopicText.indexOf(' ') != - 1) {
         escapedTopicText = escapedTopicText.replace(/ /g,'( {1,2}|%20)');
     }
-    escapedTopicText = '\\b'+escapedTopicText+'\\b';    
-    const m = new RegExp(`${escapedTopicText}`).exec(text);     
+    escapedTopicText = '(?:^|\\W)' + escapedTopicText + '(?!\\w)'; 
+    // start of string or non-word character
+    // escapedTopicText
+    // followed by non-word character
+    const m = new RegExp(escapedTopicText).exec(text);     
     let res = null;
     if (m != null) {
        res = { idxStart : m.index, matchStr : m[0], text };
