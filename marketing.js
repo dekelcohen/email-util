@@ -77,7 +77,7 @@ function getInitUrlStats() {
 //It turns out that generated/marketing emails are much more likely to have a captioned url compared to manual email and these urls are 
 //pretty damn long (and also seem different). 
 function getUrlStats(text,urlStats) {
-	if (!text) { return count; }
+	if (!text) { return; }
 	const urlRe = /<http[s]{0,1}:\/\/.*>/g;
 	 while ((m = urlRe.exec(text)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
