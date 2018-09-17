@@ -61,8 +61,15 @@ function findTopicInText(topicText,text) {
     if (escapedTopicText.indexOf(' ') != - 1) {
         escapedTopicText = escapedTopicText.replace(/ /g,'( {1,2}|%20)');
     }
-    escapedTopicText = '\\b'+escapedTopicText+'\\b';    
-    const m = new RegExp(`${escapedTopicText}`).exec(text);     
+    escapedTopicText = '(?<!\\w)' + escapedTopicText + '(?!\\w)'; 
+    // The (?<!\w) is a negative lookbehind that fails the match 
+    // if there is a word char immediately to the left of the current location.
+    // (?!\w) is a negative lookahead that fails the match if,
+    // immediately to the right of the current location, there is a word char
+    // (for some reason, \b doesn't behave as expected when the topic ends or starts with 
+    // a question mark)
+    // See https://stackoverflow.com/a/52213075/813665
+    const m = new RegExp(escapedTopicText).exec(text);     
     let res = null;
     if (m != null) {
        res = { idxStart : m.index, matchStr : m[0], text };
