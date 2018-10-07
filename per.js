@@ -120,4 +120,5 @@ function parseMailTokens(mailInfo) {
 module.exports = {
    parseMailTokens,    
    ExpectedIsAutomated,
+   isNonPerson,
 }
