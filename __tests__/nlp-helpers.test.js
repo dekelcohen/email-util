@@ -1,5 +1,40 @@
-const { findTopicInText } = require('../nlp-helpers.js');
+const { VALID_TERM_PAT, findTopicInText } = require('../nlp-helpers.js');
 
+describe('valid term pattern', () => {
+  const termRegex = new RegExp(VALID_TERM_PAT, "i");
+  describe('valid terms', () => {
+    test('only characters', () => {
+      expect('skype'.match(termRegex)).toBeTruthy();
+    });
+    test('start with characters and then numbers', () => {
+      expect('skype234'.match(termRegex)).toBeTruthy();
+    });
+    test('start with characters and then numbers and then special allowed chars', () => {
+      expect("aa3.com".match(termRegex)).toBeTruthy();
+    });
+    test('end with special character', () => {
+      expect("aa'".match(termRegex)).toBeTruthy();
+    });
+    test('weird apostrophes', () => {
+      expect("aa3'ʼ՚＇com".match(termRegex)).toBeTruthy();
+    });
+  });
+  describe('invalid terms', () => {
+    test('start with special characters', () => {
+      expect('-skype'.match(termRegex)).toBeFalsy();
+    });
+    test('start with  numbers', () => {
+      expect('23skype234'.match(termRegex)).toBeFalsy();
+    });
+    
+    test('unallowed characters', () => {
+      expect(",".match(termRegex)).toBeFalsy();
+    });
+    test('unallowed characters', () => {
+      expect("ש".match(termRegex)).toBeFalsy();
+    });
+  });
+});
 describe('findTopicInText', () => {
   describe('unigram', () => {
     test('whole word regular characters', () => {

@@ -4,7 +4,12 @@ const shallowequal = require('shallowequal');
 
 const SPACE_CHARS = ' \u00A0\u200B\u3000';
 const BASE_LANG_CHARS = 'a-zA-Z';
+
+const EUROPEAN_LANG_CHARS = '@a-zÀ-ÖØ-öø-ž';
+const VALID_CHARACTERS_MIDDLE = "_'-.&\u2019'ʼ՚＇";
 const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
+const VALID_TERM_PAT = `^[${EUROPEAN_LANG_CHARS}][${EUROPEAN_LANG_CHARS}${VALID_CHARACTERS_MIDDLE}${VALID_DIGITS}]*$`;
+
 const VALID_PUNCTUATION = '-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F\u00AD\u2060' + SPACE_CHARS +
                 '()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E';
 
@@ -105,6 +110,7 @@ module.exports = {
    VALID_DIGITS,
    VALID_PUNCTUATION,   
    PUNCTUATION_PAT,
+   VALID_TERM_PAT,
    BASE_LANG_CHARS,
    BASE_LANG_PAT,
    DIGITS_PAT,
