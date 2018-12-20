@@ -4,13 +4,22 @@ describe('valid term pattern', () => {
   const termRegex = new RegExp(VALID_TERM_PAT, "i");
   describe('valid terms', () => {
     test('only characters', () => {
-      expect('skype'.match(termRegex)).toBeTruthy();
+      expect('skype-ɑlpha'.match(termRegex)).toBeTruthy();
     });
     test('start with characters and then numbers', () => {
       expect('skype234'.match(termRegex)).toBeTruthy();
     });
     test('start with characters and then numbers and then special allowed chars', () => {
       expect("aa3.com".match(termRegex)).toBeTruthy();
+    });
+    test('special dashes allowed in the middle', () => {
+      expect("Hyper‑AvailableEnterprise".match(termRegex)).toBeTruthy();
+    });
+    test('LATIN SMALL LETTER ALPHA ', () => {
+      expect("Notificɑtion".match(termRegex)).toBeTruthy();
+    });
+    test('slashes allowed in the middle', () => {
+      expect("aa3/bb".match(termRegex)).toBeTruthy();
     });
     test('end with special character', () => {
       expect("aa'".match(termRegex)).toBeTruthy();
