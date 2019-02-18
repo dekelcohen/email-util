@@ -24,6 +24,15 @@ describe('valid term pattern', () => {
     test('end with special character', () => {
       expect("aa'".match(termRegex)).toBeTruthy();
     });
+    test('`ISO:AB` should be valid', () => {
+      expect("ISO:AB".match(termRegex)).toBeTruthy();
+    });
+    test('`AB^LOL` should be invalid', () => {
+      expect("AB^LOL".match(termRegex)).toBeFalsy();
+    });
+    test('`AB~LOL` should be invalid', () => {
+      expect("AB~LOL".match(termRegex)).toBeFalsy();
+    });
     test('weird apostrophes', () => {
       expect("aa3'ʼ՚＇com".match(termRegex)).toBeTruthy();
     });
