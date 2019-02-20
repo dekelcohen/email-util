@@ -13,8 +13,19 @@ describe('valid term pattern', () => {
       expect("aa3.com".match(termRegex)).toBeTruthy();
     });
     test('special dashes allowed in the middle', () => {
-      expect("Hyper‑AvailableEnterprise".match(termRegex)).toBeTruthy();
+      expect("Hyper‑AildingAL-Ehsaa".match(termRegex)).toBeTruthy();
     });
+    test('Microsɵft', () => {
+      expect("Microsɵft".match(termRegex)).toBeTruthy();
+    });
+
+    test('Înștiințare', () => {
+      expect("Înștiințare".match(termRegex)).toBeTruthy();
+    });
+    test('doͼument', () => {
+      expect("doͼument".match(termRegex)).toBeTruthy();
+    });
+
     test('LATIN SMALL LETTER ALPHA ', () => {
       expect("Notificɑtion".match(termRegex)).toBeTruthy();
     });
