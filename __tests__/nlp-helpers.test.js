@@ -1,8 +1,15 @@
-const { VALID_TERM_PAT, findTopicInText } = require('../nlp-helpers.js');
+const { VALID_TERM_PAT, EUROPEAN_LANG_CHARS, findTopicInText } = require('../nlp-helpers.js');
 
+
+describe('european characters', () => {
+    const europeanRegEx = new RegExp(`^[${EUROPEAN_LANG_CHARS}]*$`,"i");
+    test('european special characters from https://maximilian.schalch.de/2018/05/complete-list-of-european-special-characters', () => {
+      expect('¡¿ÄäÀàÁáÂâÃãÅåǍǎĄąĂăÆæĀāÇçĆćĈĉČčĎđĐďðÈèÉéÊêËëĚěĘęĖėĒēĜĝĢģĞğĤĥÌìÍíÎîÏïıĪīĮįĴĵĶķĹĺĻļŁłĽľÑñŃńŇňŅņÖöÒòÓóÔôÕõŐőØøŒœŔŕŘřẞßŚśŜŝŞşŠšȘșŤťŢţÞþȚțÜüÙùÚúÛûŰűŨũŲųŮůŪūŴŵÝýŸÿŶŷŹźŽžŻż'.match(europeanRegEx)).toBeTruthy();
+    });    
+});
 describe('valid term pattern', () => {
-  const termRegex = new RegExp(VALID_TERM_PAT, "i");
-  describe('valid terms', () => {
+    const termRegex = new RegExp(VALID_TERM_PAT, "i");
+    describe('valid terms', () => {
     test('only characters', () => {
       expect('skype-ɑlpha'.match(termRegex)).toBeTruthy();
     });

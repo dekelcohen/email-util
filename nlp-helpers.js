@@ -5,7 +5,7 @@ const shallowequal = require('shallowequal');
 const SPACE_CHARS = ' \u00A0\u200B\u3000';
 const BASE_LANG_CHARS = 'a-zA-Z';
 
-const EUROPEAN_LANG_CHARS = "@ɑa-zÀ-ÖØ-öø-ž\u00c0-\u017e\u0250-\u02af\u0090-\u00ff\u0180-\u024f\u0370-\u03ff";
+const EUROPEAN_LANG_CHARS = "@ɑa-zÀ-ÖØ-öø-ž\u00c0-\u017e\u0250-\u02af\u0090-\u00ff\u0180-\u024f\u0370-\u03ff\u1e00-\u1eff";
 const VALID_CHARACTERS_MIDDLE = "\\-:_'!#\\-.&/\\u002D\u05BE\u2010\u2011\u2012\u2013\u2014\u2015\u2019\uFE58\uFE63'ʼ՚＇"; // see https://www.fileformat.info/info/unicode/category/Pd/list.htm
 const VALID_DIGITS = '0-9\uFF10-\uFF19\u0660-\u0669\u06F0-\u06F9';
 const VALID_TERM_PAT = `^[${EUROPEAN_LANG_CHARS}][${EUROPEAN_LANG_CHARS}${VALID_CHARACTERS_MIDDLE}${VALID_DIGITS}]{0,30}$`;
